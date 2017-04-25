@@ -4202,6 +4202,108 @@ string.Format(@"<?xml version=""1.0"" encoding=""utf-8""?>
         Assert.Throws<InvalidOperationException>(() => { SerializeAndDeserialize(myGroup4, null, null, true); });
     }
 
+    [Fact]
+    public static void Xml_XmlSerializableTest()
+    {
+        //object[] instances = new object[] {
+        //        CXElement.GetInstance(),
+        //        CXElement.CreateInstanceOfXmlElement(new Random(123)),
+        //        XSerializable.GetInstance(),
+        //        XSerializable1.GetInstance(),
+        //        XSerializableAny.GetInstance(),
+        //        XSerializableAny1.GetInstance(),
+        //        XSerializableAny2.GetInstance(),
+        //        XSerializableAny3.GetInstance(),
+        //        XSerializableAny4.GetInstance(),
+        //        CXSerializable1.GetInstance(),
+        //        Family2.GetInstance1(),
+        //        Family2.GetInstance2(),
+
+        //        AnyTypeIXmlSerializable_Group2_Root_Mix.GetInstance(),
+        //    };
+
+        //foreach (object obj in instances)
+        //{
+        //    var actual = SerializeAndDeserialize(obj,null,null,true);
+        //}
+
+        var cxe = CXElement.GetInstance();
+        var actual = SerializeAndDeserialize(cxe,
+@"<CXElement xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <Element1>
+    <cts:Book isbn=""0321399838"" xmlns:cts=""http://www.contoso.org/Bookstore"">
+      <Author xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Dharma Shukla</Author>
+      <Author xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Bob Schmidt</Author>
+      <Title xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Essential Windows Workflow Foundation</Title>
+      <Subtitle xmlns=""http://www.contoso.org/Bookstore/BookInfo""><![CDATA[(Microsoft .NET Development Series)]]></Subtitle>
+      <Reviews xmlns=""http://www.contoso.org/Bookstore/BookInfo"">
+        <Review date=""November 9, 2006"">
+          <Reviewer>BERNARDO H. N. SILVA ""Bernardo Heynemann""</Reviewer>
+          <Caption>Absolutely Must Read</Caption>
+          <Detail><![CDATA[By the end of the first chapter I found myself with a ""W00000000T?!?"" face! This book is insanely GOOD! I'm learning a lot about the Foundation behind the Workflow. The authors take WF and break it down by chapters. Each chapter dissects a piece of the Foundation. An absolutely must-read for anyone working now with Windows Workflow Foundation (WF).]]></Detail>
+        </Review>
+        <Review date=""November 2, 2006"">
+          <Reviewer>W Boudville (US)</Reviewer>
+          <Caption>takes scheduling of programs to another level</Caption>
+          <Detail><![CDATA[WWF encapsulates some intriguing abilities that were hitherto not available in C#/.NET, or in the competing Java environment. Or at least not easily available. In both areas, there has already been the concept of serialisation. Where you can write code from memory to disk in a manner such that the code's classes can be read back as functioning binaries, at some later time. Both also have transactions and threads. WWF takes those ideas and merges them. The authors show how this results in the concept of a resumable program. The core idea in WWF. So a runtime program can be passivated (the equivalent of the earlier serialisation idea), and given a globally unique id. Then, a special Runtime program can de-passivate the program and run it, at some future time. In essence, it gets around the conundrum that when a conventional program, in any language, ends, then it ends. You needed to write custom code in another program, that could invoke the first, in some fashion. Very clumsy and error prone. WWF provides a declarative and robust way to transcend the ending of a program. Takes scheduling to the next level. Plus, the book shows that the de-passivating of a resumable program can be done on another machine, that has access to the medium in which the program was passivated. (This was the point of using a globally unique id for the passivated program.) Obvious implications for load balancing and robustness design.]]></Detail>
+        </Review>
+      </Reviews>
+    </cts:Book>
+  </Element1>
+  <cts:Book isbn=""1590597028"" xmlns:cts=""http://www.contoso.org/Bookstore"">
+    <Author xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Chris Peiris</Author>
+    <Author xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Dennis Mulder</Author>
+    <Author xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Amit Bahree</Author>
+    <Author xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Aftab Chopra</Author>
+    <Author xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Shawn Cicoria</Author>
+    <Author xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Nishith Pathak</Author>
+    <Title xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Pro WCF: Practical Microsoft SOA Implementation</Title>
+    <Publisher xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Apress</Publisher>
+  </cts:Book>
+</CXElement>");
+        Assert.NotNull(actual);
+        Assert.NotNull(actual.Element1);
+        Assert.NotNull(actual.Element2);
+
+        var cxe2 = CXElement.CreateInstanceOfXmlElement(new Random(123));
+        var actual2 = SerializeAndDeserialize(cxe2,
+@"<CXElement xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <Element1>
+    <cts:Book isbn=""0321399838"" xmlns:cts=""http://www.contoso.org/Bookstore"">
+      <Author xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Dharma Shukla</Author>
+      <Author xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Bob Schmidt</Author>
+      <Title xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Essential Windows Workflow Foundation</Title>
+      <Subtitle xmlns=""http://www.contoso.org/Bookstore/BookInfo""><![CDATA[(Microsoft .NET Development Series)]]></Subtitle>
+      <Reviews xmlns=""http://www.contoso.org/Bookstore/BookInfo"">
+        <Review date=""November 9, 2006"">
+          <Reviewer>BERNARDO H. N. SILVA ""Bernardo Heynemann""</Reviewer>
+          <Caption>Absolutely Must Read</Caption>
+          <Detail><![CDATA[By the end of the first chapter I found myself with a ""W00000000T?!?"" face! This book is insanely GOOD! I'm learning a lot about the Foundation behind the Workflow. The authors take WF and break it down by chapters. Each chapter dissects a piece of the Foundation. An absolutely must-read for anyone working now with Windows Workflow Foundation (WF).]]></Detail>
+        </Review>
+        <Review date=""November 2, 2006"">
+          <Reviewer>W Boudville (US)</Reviewer>
+          <Caption>takes scheduling of programs to another level</Caption>
+          <Detail><![CDATA[WWF encapsulates some intriguing abilities that were hitherto not available in C#/.NET, or in the competing Java environment. Or at least not easily available. In both areas, there has already been the concept of serialisation. Where you can write code from memory to disk in a manner such that the code's classes can be read back as functioning binaries, at some later time. Both also have transactions and threads. WWF takes those ideas and merges them. The authors show how this results in the concept of a resumable program. The core idea in WWF. So a runtime program can be passivated (the equivalent of the earlier serialisation idea), and given a globally unique id. Then, a special Runtime program can de-passivate the program and run it, at some future time. In essence, it gets around the conundrum that when a conventional program, in any language, ends, then it ends. You needed to write custom code in another program, that could invoke the first, in some fashion. Very clumsy and error prone. WWF provides a declarative and robust way to transcend the ending of a program. Takes scheduling to the next level. Plus, the book shows that the de-passivating of a resumable program can be done on another machine, that has access to the medium in which the program was passivated. (This was the point of using a globally unique id for the passivated program.) Obvious implications for load balancing and robustness design.]]></Detail>
+        </Review>
+      </Reviews>
+    </cts:Book>
+  </Element1>
+  <cts:Book isbn=""1590597028"" xmlns:cts=""http://www.contoso.org/Bookstore"">
+    <Author xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Chris Peiris</Author>
+    <Author xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Dennis Mulder</Author>
+    <Author xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Amit Bahree</Author>
+    <Author xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Aftab Chopra</Author>
+    <Author xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Shawn Cicoria</Author>
+    <Author xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Nishith Pathak</Author>
+    <Title xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Pro WCF: Practical Microsoft SOA Implementation</Title>
+    <Publisher xmlns=""http://www.contoso.org/Bookstore/BookInfo"">Apress</Publisher>
+  </cts:Book>
+</CXElement>");
+        Assert.NotNull(actual);
+        Assert.NotNull(actual.Element1);
+        Assert.NotNull(actual.Element2);
+    }
+
     private static readonly string s_defaultNs = "http://tempuri.org/";
     private static T RoundTripWithXmlMembersMapping<T>(object requestBodyValue, string memberName, string baseline, bool skipStringCompare = false, string wrapperName = null)
     {

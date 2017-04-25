@@ -4946,3 +4946,487 @@ public class Group4WithXmlTextAttr
     [XmlText]
     public string Text = "SomeText";
 }
+
+public class CXElement
+{
+    public XElement Element1;
+    [XmlAnyElement]
+    public XElement Element2;
+
+    public static CXElement GetInstance()
+    {
+        var celem = new CXElement();
+        celem.Element1 = CreateInstanceOfXmlElement(new Random(123));
+        celem.Element2 = CreateInstanceOfXmlElement(new Random(456));
+        return celem;
+    }
+
+    public override string ToString()
+    {
+        StringBuilder strb = new StringBuilder();
+        strb.AppendLine("Element1=" + Element1.ToString());
+        strb.AppendLine("Element2=" + Element2.ToString());
+        return strb.ToString();
+    }
+
+    public const string TemplateXmlDocument =
+    "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n" +
+    "<Bookstore name=\"Contoso\">\r\n" +
+    "\t<cts:Inventory xmlns:cts=\"http://www.contoso.org/Bookstore\" xmlns=\"http://www.contoso.org/Bookstore/BookInfo\">\r\n" +
+    "\t\t<cts:Book isbn=\"0735621519\">\r\n" +
+    "\t\t\t<Author>David Pallman</Author>\r\n" +
+    "\t\t\t<Title>Programming \"Indigo\"</Title>\r\n" +
+    "\t\t\t<Subtitle><![CDATA[The code name for the Unified Framework for building service-oriented applications on the Microsoft Windows Platform]]></Subtitle>\r\n" +
+    "\t\t</cts:Book>\r\n" +
+    "\t\t<cts:Book isbn=\"0672328771\">\r\n" +
+    "\t\t\t<Author>Craig McMurtry</Author>\r\n" +
+    "\t\t\t<Author>Marc Mercuri</Author>\r\n" +
+    "\t\t\t<Author>Nigel Watling</Author>\r\n" +
+    "\t\t\t<Title>Microsoft Windows Communication Foundation: Hands-on</Title>\r\n" +
+    "\t\t\t<Subtitle><![CDATA[Beta Edition]]></Subtitle>\r\n" +
+    "\t\t</cts:Book>\r\n" +
+    "\t\t<cts:Book isbn=\"0735623066\">\r\n" +
+    "\t\t\t<Author>Justin Smith</Author>\r\n" +
+    "\t\t\t<Title>Inside Microsoft Windows Communication Foundation</Title>\r\n" +
+    "\t\t</cts:Book>\r\n" +
+    "\t\t<cts:Book isbn=\"1590597028\">\r\n" +
+    "\t\t\t<Author>Chris Peiris</Author>\r\n" +
+    "\t\t\t<Author>Dennis Mulder</Author>\r\n" +
+    "\t\t\t<Author>Amit Bahree</Author>\r\n" +
+    "\t\t\t<Author>Aftab Chopra</Author>\r\n" +
+    "\t\t\t<Author>Shawn Cicoria</Author>\r\n" +
+    "\t\t\t<Author>Nishith Pathak</Author>\r\n" +
+    "\t\t\t<Title>Pro WCF: Practical Microsoft SOA Implementation</Title>\r\n" +
+    "\t\t\t<Publisher>Apress</Publisher>\r\n" +
+    "\t\t</cts:Book>\r\n" +
+    "\t\t<cts:Book isbn=\"0321399838\">\r\n" +
+    "\t\t\t<Author>Dharma Shukla</Author>\r\n" +
+    "\t\t\t<Author>Bob Schmidt</Author>\r\n" +
+    "\t\t\t<Title>Essential Windows Workflow Foundation</Title>\r\n" +
+    "\t\t\t<Subtitle><![CDATA[(Microsoft .NET Development Series)]]></Subtitle>\r\n" +
+    "\t\t\t<Reviews>\r\n" +
+    "\t\t\t\t<Review date=\"November 9, 2006\">\r\n" +
+    "\t\t\t\t\t<Reviewer>BERNARDO H. N. SILVA \"Bernardo Heynemann\"</Reviewer>\r\n" +
+    "\t\t\t\t\t<Caption>Absolutely Must Read</Caption>\r\n" +
+    "\t\t\t\t\t<Detail>\r\n" +
+    "\t\t\t\t\t\t<![CDATA[By the end of the first chapter I found myself with a \"W00000000T?!?\" face! This book is insanely GOOD! " +
+    "I'm learning a lot about the Foundation behind the Workflow. " +
+    "The authors take WF and break it down by chapters. Each chapter dissects a piece of the Foundation. " +
+    "An absolutely must-read for anyone working now with Windows Workflow Foundation (WF).]]>\r\n" +
+    "\t\t\t\t\t</Detail>\r\n" +
+    "\t\t\t\t</Review>\r\n" +
+    "\t\t\t\t<Review date=\"November 2, 2006\">\r\n" +
+    "\t\t\t\t\t<Reviewer>W Boudville (US)</Reviewer>\r\n" +
+    "\t\t\t\t\t<Caption>takes scheduling of programs to another level</Caption>\r\n" +
+    "\t\t\t\t\t<Detail>\r\n" +
+    "\t\t\t\t\t\t<![CDATA[WWF encapsulates some intriguing abilities that were hitherto not available in C#/.NET, or in the competing Java environment. Or at least not easily available. In both areas, there has already been the concept of serialisation. Where you can write code from memory to disk in a manner such that the code's classes can be read back as functioning binaries, at some later time. Both also have transactions and threads. " +
+    "WWF takes those ideas and merges them. The authors show how this results in the concept of a resumable program. The core idea in WWF. So a runtime program can be passivated (the equivalent of the earlier serialisation idea), and given a globally unique id. Then, a special Runtime program can de-passivate the program and run it, at some future time. In essence, it gets around the conundrum that when a conventional program, in any language, ends, then it ends. You needed to write custom code in another program, that could invoke the first, in some fashion. Very clumsy and error prone. WWF provides a declarative and robust way to transcend the ending of a program. Takes scheduling to the next level. " +
+    "Plus, the book shows that the de-passivating of a resumable program can be done on another machine, that has access to the medium in which the program was passivated. (This was the point of using a globally unique id for the passivated program.) Obvious implications for load balancing and robustness design.]]></Detail>\r\n" +
+    "\t\t\t\t</Review>\r\n" +
+    "\t\t\t</Reviews>\r\n" +
+    "\t\t</cts:Book>\r\n" +
+    "\t</cts:Inventory>\r\n" +
+    "</Bookstore>\r\n";
+
+    public static XElement CreateInstanceOfXmlElement(Random rndGen)
+    {
+        XDocument doc;
+        string docString = TemplateXmlDocument;
+        docString = docString.Replace("\r\n", "\n").Replace("\r", "\n");
+        doc = XDocument.Load(new StringReader(docString));
+        if (rndGen.Next(3) == 0)
+        {
+            return doc.Root;
+        }
+        XNamespace cts = "http://www.contoso.org/Bookstore";
+        List<XElement> nodes = new List<XElement>(doc.Descendants(cts + "Book"));
+        return nodes[rndGen.Next(nodes.Count)];
+    }
+}
+
+public class CXSerializable1
+{
+    public XSerializable Ser1;
+    public XSerializable1 Ser2;
+    public XSerializableAny SerAny1;
+
+    public static CXSerializable1 GetInstance()
+    {
+        var ser = new CXSerializable1();
+        ser.Ser1 = XSerializable.GetInstance();
+        ser.Ser2 = XSerializable1.GetInstance();
+        ser.SerAny1 = XSerializableAny.GetInstance();
+        return ser;
+    }
+
+    public override string ToString()
+    {
+        var strb = new StringBuilder();
+        strb.AppendLine("Ser1=" + Ser1.ToString());
+        strb.AppendLine("Ser2=" + Ser2.ToString());
+        strb.AppendLine("SerAny1=" + SerAny1.ToString());
+        return strb.ToString();
+    }
+}
+
+public class XSerializable : IXmlSerializable
+{
+    protected string _attr;
+    string _firstName;
+    string _lastName;
+    string _content;
+
+    public static XSerializable GetInstance()
+    {
+        return FillInstance(new XSerializable());
+    }
+
+    protected static XSerializable FillInstance(XSerializable cser)
+    {
+        cser._attr = "Male";
+        cser._firstName = "John";
+        cser._lastName = "Smith";
+        cser._content = "Type: " + cser.GetType().Name;
+        return cser;
+    }
+
+    public XmlSchema GetSchema()
+    {
+        return null;
+    }
+
+    public virtual void WriteXml(XmlWriter writer)
+    {
+        WriteAttribute(writer);
+        WriteElement(writer);
+    }
+
+    protected void WriteAttribute(XmlWriter writer)
+    {
+        writer.WriteAttributeString("attr", _attr);
+    }
+
+    protected void WriteElement(XmlWriter writer)
+    {
+        writer.WriteStartElement("person", "urn:mt-com");
+        writer.WriteAttributeString("firstName", _firstName);
+        writer.WriteAttributeString("lastName", _lastName);
+        writer.WriteString(_content);
+        writer.WriteEndElement();
+    }
+
+    public virtual void ReadXml(XmlReader reader)
+    {
+        ReadAttribute(reader);
+        reader.ReadStartElement();
+        ReadElement(reader);
+        reader.ReadEndElement();
+    }
+
+    protected void ReadAttribute(XmlReader reader)
+    {
+        _attr = reader["attr"];
+    }
+    protected void ReadElement(XmlReader reader)
+    {
+        _firstName = reader["firstName"];
+        _lastName = reader["lastName"];
+        reader.ReadStartElement("person", "urn:mt-com");
+        _content = reader.ReadContentAsString();
+        reader.ReadEndElement();
+    }
+
+    public override string ToString()
+    {
+        StringBuilder strb = new StringBuilder();
+        strb.AppendLine("attr=" + _attr);
+        strb.AppendLine("firstName=" + _firstName);
+        strb.AppendLine("lastName=" + _lastName);
+        strb.AppendLine("content=" + _content);
+        return strb.ToString();
+    }
+}
+
+[XmlSchemaProvider("GetSchemaType", IsAny = false)]
+public class XSerializable1 : XSerializable
+{
+    public static XmlQualifiedName GetSchemaType(XmlSchemaSet set)
+    {
+        return new XmlQualifiedName("personany", "http://www.w3.org/2001/XMLSchema");
+    }
+
+    new public static XSerializable1 GetInstance()
+    {
+        return (XSerializable1)FillInstance(new XSerializable1());
+    }
+}
+
+[XmlSchemaProvider(null, IsAny = true)]
+public class XSerializableAny : XSerializable
+{
+    public override void WriteXml(XmlWriter writer)
+    {
+        _attr = null;
+        WriteElement(writer);
+    }
+    public override void ReadXml(XmlReader reader)
+    {
+        ReadElement(reader);
+    }
+    new public static XSerializableAny GetInstance()
+    {
+        return (XSerializableAny)FillInstance(new XSerializableAny());
+    }
+}
+
+[XmlSchemaProvider("GetSchemaType", IsAny = true)]
+public class XSerializableAny1 : XSerializableAny
+{
+    public static XmlQualifiedName GetSchemaType(XmlSchemaSet set)
+    {
+        return null;
+    }
+
+    new public static XSerializableAny1 GetInstance()
+    {
+        return (XSerializableAny1)FillInstance(new XSerializableAny1());
+    }
+}
+
+[XmlSchemaProvider("GetSchemaType", IsAny = true)]
+public class XSerializableAny2 : XSerializableAny
+{
+    public static XmlQualifiedName GetSchemaType(XmlSchemaSet set)
+    {
+        return new XmlQualifiedName("personany", "http://www.w3.org/2001/XMLSchema");
+    }
+
+    new public static XSerializableAny2 GetInstance()
+    {
+        return (XSerializableAny2)FillInstance(new XSerializableAny2());
+    }
+}
+
+[XmlSchemaProvider(null, IsAny = false)]
+public class XSerializableAny3 : XSerializableAny
+{
+    new public static XSerializableAny3 GetInstance()
+    {
+        return (XSerializableAny3)FillInstance(new XSerializableAny3());
+    }
+}
+
+[XmlSchemaProvider("GetSchemaType", IsAny = false)]
+public class XSerializableAny4 : XSerializableAny
+{
+    public static XmlQualifiedName GetSchemaType(XmlSchemaSet set)
+    {
+        return null;
+    }
+    new public static XSerializableAny4 GetInstance()
+    {
+        return (XSerializableAny4)FillInstance(new XSerializableAny4());
+    }
+}
+
+[XmlSchemaProvider(null, IsAny = true)]
+public class AnyTypeIXmlSer_withXSP : IXmlSerializable
+{
+    public string Name;
+    public int Age;
+
+    public AnyTypeIXmlSer_withXSP()
+    {
+    }
+
+    public void ReadXml(XmlReader reader)
+    {
+        this.Name = reader[1];
+        this.Age = Int32.Parse(reader[2], CultureInfo.CurrentCulture.NumberFormat);
+        reader.ReadStartElement("MyDocument");
+    }
+
+    public void WriteXml(XmlWriter writer)
+    {
+        writer.WriteStartElement("MyDocument");
+        writer.WriteStartAttribute("userElement");
+        writer.WriteValue("XmlSerializable value");
+        writer.WriteEndAttribute();
+        writer.WriteStartAttribute("Name", "Foo");
+        writer.WriteValue(this.Name.ToString());
+        writer.WriteEndAttribute();
+        writer.WriteStartAttribute("Age", "Bar");
+        writer.WriteValue(this.Age.ToString());
+        writer.WriteEndAttribute();
+        writer.WriteEndElement();
+    }
+    public System.Xml.Schema.XmlSchema GetSchema()
+    {
+        return null;
+    }
+}
+
+[XmlSchemaProvider("GetSchemaType", IsAny = true)]
+public class XSerializableAnyXSP1 : AnyTypeIXmlSer_withXSP
+{
+    public XSerializableAnyXSP1()
+    {
+    }
+
+    public static XmlQualifiedName GetSchemaType(XmlSchemaSet set)
+    {
+        return null;
+    }
+}
+
+[XmlRoot(Namespace = "Info2Mix")]
+public class AnyTypeIXmlSerializable_Group2_Root_Mix
+{
+    public string Name;
+    public int Age;
+
+    public AnyTypeIXmlSerializable_Group2_Root_Mix()
+    {
+    }
+
+    [XmlAnyElement("Employee", Namespace = "http://tempuri.org/")]
+    public XElement[] UnknownEmployees;
+
+    [XmlAnyElement()]
+    public XElement[] UnknownElements;
+
+    public XSerializableAnyXSP1 AnyTypeValue;
+
+    public static AnyTypeIXmlSerializable_Group2_Root_Mix GetInstance()
+    {
+        var ser = new AnyTypeIXmlSerializable_Group2_Root_Mix();
+        ser.Age = 28;
+        ser.Name = "Jeff";
+        ser.UnknownEmployees = new XElement[] {
+                new XElement("{a}b", "c"),
+                new XElement("{d}e", "f"),
+            };
+        ser.UnknownElements = new XElement[] {
+                new XElement("{j}k", "i"),
+                new XElement("{l}m", "n"),
+            };
+        ser.AnyTypeValue = new XSerializableAnyXSP1();
+        ser.AnyTypeValue.Age = 30;
+        ser.AnyTypeValue.Name = "Joe";
+        return ser;
+    }
+
+    public override string ToString()
+    {
+        var strb = new StringBuilder();
+        strb.AppendLine("Name=" + Name);
+        strb.AppendLine("Age=" + Age);
+        strb.AppendLine("AnyTypeValue.Name=" + AnyTypeValue.Name);
+        strb.AppendLine("AnyTypeValue.Age=" + AnyTypeValue.Age);
+
+        if (UnknownEmployees != null)
+        {
+            strb.AppendLine("UnknownEmployees.Length=" + UnknownEmployees.Length);
+            for (int i = 0; i < UnknownEmployees.Length; ++i)
+            {
+                strb.AppendLine("UnknownEmployees[" + i + "]=" + UnknownEmployees[i]);
+            }
+        }
+        else
+            strb.AppendLine("UnknownEmployees=null");
+
+        if (UnknownElements != null)
+        {
+            strb.AppendLine("UnknownElements.Length=" + UnknownElements.Length);
+            for (int i = 0; i < UnknownElements.Length; ++i)
+            {
+                strb.AppendLine("UnknownElements[" + i + "]=" + UnknownElements[i]);
+            }
+        }
+        else
+            strb.AppendLine("UnknownElements=null");
+        return strb.ToString();
+    }
+}
+
+public class People : IXmlSerializable
+{
+    private string _firstName;
+    private string _lastName;
+
+    public People()
+    {
+    }
+
+    public People(string firstName, string lastName)
+    {
+        _firstName = firstName;
+        _lastName = lastName;
+    }
+
+    public XmlSchema GetSchema()
+    {
+        return null;
+    }
+
+    public void WriteXml(XmlWriter writer)
+    {
+        writer.WriteAttributeString("gender", "Male");
+        writer.WriteStartElement("people", "urn:mt-com");
+        writer.WriteAttributeString("firstName", _firstName);
+        writer.WriteAttributeString("lastName", _lastName);
+        writer.WriteString(_firstName + " " + _lastName);
+        writer.WriteEndElement();
+    }
+
+    public void ReadXml(XmlReader reader)
+    {
+        string gender = reader["gender"];
+        reader.ReadStartElement();
+        reader.MoveToContent();
+        _firstName = reader["firstName"];
+        _lastName = reader["lastName"];
+        reader.ReadStartElement("people", "urn:mt-com");
+        string val = reader.ReadContentAsString();
+        reader.ReadEndElement();
+        reader.ReadEndElement();
+    }
+
+    public override string ToString()
+    {
+        return (string.Format("People [{0} {1}]", _firstName, _lastName));
+    }
+}
+
+public class Family2
+{
+    public Family2() { }
+    public People p1;
+    public People p2;
+    public People p3;
+
+    public static Family2 GetInstance1()
+    {
+        Family2 family = new Family2();
+        family.p1 = new People("John", "Smith");
+        family.p2 = new People("Jane", "Smith");
+        family.p3 = null;
+        return family;
+    }
+
+    public static Family2 GetInstance2()
+    {
+        Family2 family = GetInstance1();
+        family.p3 = new People("Josh", "Smith");
+        return family;
+    }
+
+    public override string ToString()
+    {
+        var strb = new StringBuilder();
+        strb.AppendLine("p1=" + p1);
+        strb.AppendLine("p2=" + p2);
+        strb.AppendLine("p3=" + p3);
+        return strb.ToString();
+    }
+}
